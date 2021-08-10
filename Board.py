@@ -1,6 +1,5 @@
-import sys
 import tkinter as tk
-from typing import DefaultDict
+from enum import Enum
 import random
 
 #-----------------------------------
@@ -19,16 +18,27 @@ def generateEmptyBoard(x,y):
     return [[_DEFAULTVAL for j in range(x)] for i in range(y)]
 
 def genRandomColor():
+    """
+    @returns a random string representing a color
+    """
     r=  random.randint(1,4)
 
     if r == 1:
-        return "red"
+        return Color.RED.value
     if r == 2:
-        return "green"
+        return Color.GREEN.value
     if r == 3:
-        return "black"
-    return "white"
-    
+        return Color.BLACK.value
+    return Color.WHITE.value
+
+#-----------------------------------
+#       Colors Enum
+#-----------------------------------
+class Color(Enum):
+     RED = "red"
+     GREEN = "green"
+     BLACK = "black"
+     WHITE = "white" 
 
 #-----------------------------------
 #       Class Screen
@@ -59,15 +69,15 @@ class Screen(tk.Frame):
         board = generateEmptyBoard(self.width,self.height)
         for row in range(self.height):
             for col in range(self.width):
-                board[row][col] = self._createPixel(row, col, genRandomColor())
+                board[row][col] = self._createPixel(row, col)
         self.board = board
     
-    def _createPixel(self, row, col, default_color):
+    def _createPixel(self, row : int, col : int):
         """
         @return: an instance of a label
         """
         label = tk.Label(self.content, 
-                        bg=default_color, 
+                        bg= genRandomColor(), 
                         width = 2*_PIXELsize, 
                         height = 1*_PIXELsize)
         label.grid(column=col*_PIXELsize, 
@@ -75,7 +85,20 @@ class Screen(tk.Frame):
                     columnspan=_PIXELsize,
                     rowspan=_PIXELsize)
         return label
+    
+    def setPixel(self, i : int, j : int, color):
+        """
+        Set the color of pixel i,j.
+        @param i,j: pixel indexes on board
+        @param color: new pixel color
+        """
+        if i < self.height and j < self.width:
+            self.board[i][j].config(bg = color.value)
+        else:
+            print(f"Error setting color pixel {i},{j}\nIndex out of range")
 
 if __name__=="__main__":
     gameScreen = Screen(_WIDTH, _HEIGHT)
+    for i in range(_WIDTH):
+        gameScreen.setPixel(0,i,Color.RED)
     gameScreen.start()
