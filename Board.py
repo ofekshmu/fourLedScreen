@@ -18,12 +18,6 @@ _PIXELsize = 1
 def generateEmptyBoard(x,y):
     return [[_DEFAULTVAL for j in range(x)] for i in range(y)]
 
-def genDimensions(x , y, Default = False):
-    xtag = x*_PIXELsize
-    ytag = y*_PIXELsize*10
-    dim = "500x500" if Default else f"{str(xtag)}x{str(ytag)}"
-    return dim
-
 def genRandomColor():
     r=  random.randint(1,4)
 
@@ -49,16 +43,9 @@ class Screen(tk.Frame):
         self.height = height
 
         self.content = tk.Frame(self.root)
-        frame = tk.Frame(self.content, 
-                        borderwidth=10, 
-                        relief="ridge")
         self.content.grid(column=0,row=0,columnspan=self.width,
                         rowspan=self.height)
-        frame.grid(column=0, 
-                    row=0, 
-                    columnspan=self.width, 
-                    rowspan=self.height)
-
+        #adds pixels
         self._initScreen()
 
     def start(self):
