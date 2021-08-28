@@ -21,15 +21,17 @@ def genRandomColor():
     """
     @returns a random string representing a color
     """
-    r=  random.randint(1,4)
+    r = random.randint(1,4)
 
-    if r == 1:
-        return Color.RED.value
-    if r == 2:
-        return Color.GREEN.value
-    if r == 3:
-        return Color.BLACK.value
-    return Color.WHITE.value
+    match r:
+        case 1:
+            return Color.RED.value
+        case 2:
+            return Color.GREEN.value
+        case 3:
+            return Color.BLACK.value
+        default:
+            return Color.WHITE.value
 
 #-----------------------------------
 #       Colors Enum
